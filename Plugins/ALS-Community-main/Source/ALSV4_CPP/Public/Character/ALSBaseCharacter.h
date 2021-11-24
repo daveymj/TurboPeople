@@ -561,10 +561,10 @@ protected:
 
 	/** Rotation System */
 
-	UPROPERTY(BlueprintReadOnly, Category = "ALS|Rotation System")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS|Rotation System")
 	FRotator TargetRotation = FRotator::ZeroRotator;
 
-	UPROPERTY(BlueprintReadOnly, Category = "ALS|Rotation System")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS|Rotation System")
 	FRotator InAirRotation = FRotator::ZeroRotator;
 
 	UPROPERTY(BlueprintReadOnly, Category = "ALS|Rotation System")
@@ -643,6 +643,13 @@ protected:
 
 	/** We won't use curve based movement and a few other features on networked games */
 	bool bEnableNetworkOptimizations = false;
+
+	//ADDED BY DAVID
+	UFUNCTION(BlueprintImplementableEvent)
+		void WallRunCheck();
+
+	UFUNCTION(BlueprintImplementableEvent)
+		bool WallRunIntCheck();
 
 private:
 	UPROPERTY()
