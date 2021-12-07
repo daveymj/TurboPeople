@@ -181,28 +181,33 @@ void AALSBaseCharacter::SetAimYawRate(float NewAimYawRate)
 
 void AALSBaseCharacter::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	
+		Super::Tick(DeltaTime);
+		if (!WallRunIntCheck())
+		{
+			
+		// Set required values
+		SetEssentialValues(DeltaTime);
 
-	// Set required values
-	SetEssentialValues(DeltaTime);
+		if (MovementState == EALSMovementState::Grounded)
+		{
+			UpdateCharacterMovement();
+			UpdateGroundedRotation(DeltaTime);
+		}
+		else if (MovementState == EALSMovementState::InAir)
+		{
+			UpdateInAirRotation(DeltaTime);
+		}
+		else if (MovementState == EALSMovementState::Ragdoll)
+		{
+			RagdollUpdate(DeltaTime);
+		}
 
-	if (MovementState == EALSMovementState::Grounded)
-	{
-		UpdateCharacterMovement();
-		UpdateGroundedRotation(DeltaTime);
-	}
-	else if (MovementState == EALSMovementState::InAir)
-	{
-		UpdateInAirRotation(DeltaTime);
-	}
-	else if (MovementState == EALSMovementState::Ragdoll)
-	{
-		RagdollUpdate(DeltaTime);
-	}
-
-	// Cache values
-	PreviousVelocity = GetVelocity();
-	PreviousAimYaw = AimingRotation.Yaw;
+		// Cache values
+		PreviousVelocity = GetVelocity();
+		PreviousAimYaw = AimingRotation.Yaw;
+	    }
+		else{ UE_LOG(LogTemp, Warning, TEXT("its wall running")); }
 }
 
 void AALSBaseCharacter::RagdollStart()
@@ -1327,7 +1332,7 @@ void AALSBaseCharacter::PlayerCameraRightInput(float Value)
 void AALSBaseCharacter::JumpPressedAction()
 {
 	// Jump Action: Press "Jump Action" to end the ragdoll if ragdolling, stand up if crouching, or jump if standing.
-
+	WallRunCheck();
 	if (JumpPressedDelegate.IsBound())
 	{
 		JumpPressedDelegate.Broadcast();
