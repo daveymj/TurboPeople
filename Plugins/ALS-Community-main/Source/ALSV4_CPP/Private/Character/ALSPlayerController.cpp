@@ -16,11 +16,11 @@ void AALSPlayerController::OnPossess(APawn* NewPawn)
 {
 	Super::OnPossess(NewPawn);
 	PossessedCharacter = Cast<AALSBaseCharacter>(NewPawn);
-	if (!IsRunningDedicatedServer())
-	{
-		// Servers want to setup camera only in listen servers.
-		SetupCamera();
-	}
+	//if (!IsRunningDedicatedServer()) we swapped to our own camera system B)
+	//{
+	//	// Servers want to setup camera only in listen servers.
+	//	SetupCamera();
+	//}
 	SetupDebugInputs();
 }
 
